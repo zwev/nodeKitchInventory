@@ -1,0 +1,14 @@
+<%- include("partials/header.ejs") %>
+
+<%- include("partials/nav.ejs") %>
+<div class="container">
+    <h1>Add New User</h1>
+    <form action="/users/add" method="POST">
+      <label for="username">User Name:</label>
+      <input type="text" id="username" name="name" required>
+      <button type="submit">Add User</button>
+    </form>
+    <a href="/">Back to Inventory</a>
+  </div>
+
+  <%- include("partials/footer.ejs") %>
