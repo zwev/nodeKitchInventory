@@ -1,0 +1,15 @@
+<%- include("partials/header.ejs") %>
+
+<body>
+    <h1>Register New Account</h1>
+
+    <form action="/register" method="post">
+        Username: <input type="text" name="username"><br>
+        Password: <input type="password" name="password"><br>
+        Confirm Password: <input type="password" name="passwordConfirm"><br>
+        <button> Create Account </button>
+
+    </form>
+    <a href="/login">Back to Login</a>
+</body>
+</html>
