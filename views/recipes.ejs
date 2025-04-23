@@ -1,0 +1,42 @@
+<%- include("partials/header.ejs") %>
+
+<%- include("partials/nav.ejs") %>
+
+<!-- right now this is the only search available but goal is to attach this search to recipes
+ in the user's inventory so that when they click an ingredient, it is redirected to a search here.
+ can also add another search on this page that lets them select ingredients by what they currently have
+ in the database -->
+<div class="search-container">
+  <form id="searchForm">
+    <label for="ingredient">Search Recipes by Ingredient:</label>
+    <input type="text" id="ingredient" name="ingredient" placeholder="Enter ingredient name" required>
+    <button type="submit" id="searchButton" class="btn btn-primary">Search</button>
+  </form>
+</div>
+
+<div class="recipes-container mt-4" id="recipesContainer">
+  <!-- Search results inserted here -->
+</div>
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="recipeModal" tabindex="-1" aria-labelledby="recipeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="recipeModalLabel">Recipe Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modalRecipeDetails">
+        <!-- Recipe details will be inserted here -->
+        <p>Loading...</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("partials/footer.ejs") %>
+
+<script src="/js/scripts.js"></script>

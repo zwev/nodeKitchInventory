@@ -117,6 +117,41 @@ app.get('/user/add', async(req, res) => {
     res.render('addUser')
  });
 
+app.get('/recipes', (req, res) => {
+    res.render('recipes'); // Render the recipes.ejs page
+});
+
+
+app.get('/recipes/search', async (req, res) => {
+    const ingredient = req.query.ingredient;
+
+    try {
+        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`);
+        const data = await response.json();
+        const recipes = data.meals || []; // empty if no recipes found
+
+        res.json({ recipes }); // Return JSON data
+    } catch (error) {
+        console.error('Error fetching recipes:', error);
+        res.status(500).json({ error: 'Error fetching recipes' });
+    }
+});
+
+app.get('/recipes/:id', async (req, res) => {
+    const recipeId = req.params.id;
+
+    try {
+        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`);
+        const data = await response.json();
+        const recipe = data.meals[0]; // Get the full recipe details
+
+        res.json({ recipe }); // Return recipe details as JSON
+    } catch (error) {
+        console.error('Error fetching recipe details:', error);
+        res.status(500).json({ error: 'Error fetching recipe details' });
+    }
+});
+
 app.get("/dbTest", async(req, res) => {
     let sql = "select * from q_quotes";
     const [rows] = await conn.query(sql);
