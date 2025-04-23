@@ -14,13 +14,13 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    // Clear previous results, display loading message
+    recipesContainer.innerHTML = '<p>Loading recipes...</p>';
+
     try {
       const response = await fetch(`/recipes/search?ingredient=${encodeURIComponent(ingredient)}`);
       const data = await response.json();
-
-      // Clear previous results
-      recipesContainer.innerHTML = '';
-
+      
       if (data.recipes && data.recipes.length > 0) {
         const resultsHTML = data.recipes.map(recipe => `
           <li class="mb-3">
