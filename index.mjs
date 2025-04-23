@@ -117,21 +117,24 @@ app.get('/user/add', async(req, res) => {
     res.render('addUser')
  });
 
- app.get('/recipes', async (req, res) => {
-    const ingredient = req.query.ingredient; // Get the search query from the URL
-    let recipes = null;
+app.get('/recipes', (req, res) => {
+    res.render('recipes'); // Render the recipes.ejs page
+});
 
-    if (ingredient) {
-        try {
-            const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`);
-            const data = await response.json();
-            recipes = data.meals; // Store the search results
-        } catch (error) {
-            console.error('Error fetching recipes:', error);
-        }
+
+app.get('/recipes/search', async (req, res) => {
+    const ingredient = req.query.ingredient;
+
+    try {
+        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`);
+        const data = await response.json();
+        const recipes = data.meals || []; // Handle case where no recipes are found
+
+        res.json({ recipes }); // Return JSON data for the AJAX request
+    } catch (error) {
+        console.error('Error fetching recipes:', error);
+        res.status(500).json({ error: 'Error fetching recipes' });
     }
-
-    res.render('recipes', { recipes }); // Render the recipes.ejs template with the search results
 });
 
 app.get('/recipes/:id', async (req, res) => {

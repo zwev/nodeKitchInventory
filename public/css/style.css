@@ -17,7 +17,21 @@ body{
     color: #00ff00;
 }
 
-.no-bullets {
-    list-style-type: none;
-    padding: 0;
+.ingredient-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 0.25rem 0;
+    font-size: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .ingredient-measure {
+    display: inline-block;
+    width: 120px;
+    color: #6c757d; 
+    text-align: start;
+  }
+  
+  .ingredient-name {
+    text-align: start;
   }
