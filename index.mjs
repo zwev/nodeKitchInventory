@@ -128,9 +128,9 @@ app.get('/recipes/search', async (req, res) => {
     try {
         const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`);
         const data = await response.json();
-        const recipes = data.meals || []; // Handle case where no recipes are found
+        const recipes = data.meals || []; // empty if no recipes found
 
-        res.json({ recipes }); // Return JSON data for the AJAX request
+        res.json({ recipes }); // Return JSON data
     } catch (error) {
         console.error('Error fetching recipes:', error);
         res.status(500).json({ error: 'Error fetching recipes' });
