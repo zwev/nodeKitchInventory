@@ -1,0 +1,48 @@
+<%- include("partials/header.ejs") %>
+
+<div class="search-container">
+  <form id="searchForm" method="GET" action="/recipes">
+    <label for="ingredient">Search Recipes by Ingredient:</label>
+    <input type="text" id="ingredient" name="ingredient" placeholder="Enter ingredient name" required>
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+</div>
+
+<% if (recipes) { %>
+  <div class="recipes-container mt-4">
+    <h2>Search Results:</h2>
+    <ul class="list-unstyled">
+      <% recipes.forEach(recipe => { %>
+        <li class="mb-3">
+          <a href="#" class="recipe-link" data-id="<%= recipe.idMeal %>" data-bs-toggle="modal" data-bs-target="#recipeModal">
+            <h3><%= recipe.strMeal %></h3>
+            <img src="<%= recipe.strMealThumb %>" alt="<%= recipe.strMeal %>" class="img-thumbnail" width="150">
+          </a>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+<% } %>
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="recipeModal" tabindex="-1" aria-labelledby="recipeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="recipeModalLabel">Recipe Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modalRecipeDetails">
+        <!-- Recipe details will be filled in here from js -->
+        <p>Loading...</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("partials/footer.ejs") %>
+
+<script src="/js/scripts.js"></script>

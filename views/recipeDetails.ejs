@@ -1,0 +1,18 @@
+<%- include("partials/header.ejs") %>
+
+<div class="recipe-details">
+  <h1><%= recipe.strMeal %></h1>
+  <img src="<%= recipe.strMealThumb %>" alt="<%= recipe.strMeal %>" width="300">
+  <h2>Ingredients:</h2>
+  <ul>
+    <% for (let i = 1; i <= 20; i++) { %>
+      <% if (recipe[`strIngredient${i}`]) { %>
+        <li><%= recipe[`strIngredient${i}`] %> - <%= recipe[`strMeasure${i}`] %></li>
+      <% } %>
+    <% } %>
+  </ul>
+  <h2>Instructions:</h2>
+  <p><%= recipe.strInstructions %></p>
+</div>
+
+<%- include("partials/footer.ejs") %>

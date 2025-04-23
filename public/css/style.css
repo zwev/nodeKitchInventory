@@ -16,3 +16,8 @@ body{
 .container{
     color: #00ff00;
 }
+
+.no-bullets {
+    list-style-type: none;
+    padding: 0;
+  }
