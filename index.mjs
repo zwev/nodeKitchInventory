@@ -63,7 +63,6 @@ app.post('/login', async (req, res) => {
     if (match) {
         req.session.userID = rows[0].userID;
         req.session.authenticated = true;
-        console.log (req.session.userID);
         res.redirect('/');
     } else {
         res.redirect("/login");
@@ -80,7 +79,6 @@ app.post('/register', async (req, res) => {
     let passwordConfirm = req.body.passwordConfirm;
     if(password == passwordConfirm){
         let passHash = await bcrypt.hash(password,10);
-        console.log(passHash);
     
     
         let sql = `INSERT INTO admin
@@ -101,21 +99,28 @@ app.get('/logout', (req, res) => {
     res.redirect('/login')
 });
 
-app.get('/ingredients', isAuthenticated, async(req, res) => {
-    
+app.get('/ingredients', isAuthenticated, async (req, res) => {
+    let sql = `SELECT * FROM ingredients`
+    const [rows] = await conn.query(sql);
+    console.log(rows);
     res.render('ingredients', 
-     {ingredients: [{ ingredientId: 1, name: 'Tomato', quantity: 10, unit: 'pcs' }]})
+     {ingredients: rows})
  });
 
 app.get('/ingredients/add', async(req, res) => {
     res.render('addIngredient')
  });
 
-app.post('/ingredients/add', (req, res) => {
+app.post('/ingredients/add', async (req, res) => {
   const { name, quantity, unit } = req.body;
   if (!name || !quantity || !unit) {
     return res.status(400).send('All fields are required.');
   }
+  let sql = `INSERT into ingredients
+  (name, qty, unit) 
+  VALUES (?,?,?)`;
+  let params = [name, quantity, unit];
+  const [rows] = await conn.query(sql, params);
   console.log({ name, quantity, unit });
   // Redirect back to main index or inventory view
   res.redirect('/ingredients');
@@ -123,24 +128,30 @@ app.post('/ingredients/add', (req, res) => {
 
 app.get("/ingredients/edit", async function(req, res){
     let ingredientId = req.query.ingredientId;
-    let sql = ``;
-    const [rows] = [];
-    res.render("editIngredient", {ingredientInfo: [{ ingredientId: ingredientId, name: 'Tomato', quantity: 10, unit: 'pcs' }]});
+    let sql = `SELECT *
+    FROM ingredients
+    WHERE ingredientId = ?`;
+    const [rows] = await conn.query(sql, [ingredientId]);
+    res.render("editIngredient", {ingredientInfo: [{ ingredientId: rows[0].ingredientId, name: rows[0].name, quantity: rows[0].qty, unit: rows[0].unit }]});
    });
 
 app.post("/ingredients/edit", async function(req, res){
   const {ingredientId, name, quantity, unit } = req.body;
-  let sql = ``;
-  console.log({ ingredientId, name, quantity, unit });
-  //const [rows] = await conn.query(sql,params);
+  let sql = `UPDATE ingredients
+  SET name = ?,
+  qty = ?,
+  unit = ?
+  WHERE ingredientId = ?`;
+  let params = [name, quantity, unit, ingredientId];
+  const [rows] = await conn.query(sql, params);
   res.redirect("/ingredients");
 });
 
 app.get("/ingredients/delete", async function(req, res){
     let ingredientId = req.query.ingredientId;
-    let sql = ``;
-    console.log(ingredientId);
-    //const [rows] = await conn.query(sql, []);
+    let sql = `DELETE FROM ingredients
+    WHERE ingredientId = ?`;
+    const [rows] = await conn.query(sql, [ingredientId]);
     res.redirect("/ingredients");
 });
  
