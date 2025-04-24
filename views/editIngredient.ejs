@@ -1,0 +1,18 @@
+<div class="container">
+    <h1>Edit Ingredient</h1>
+    <form action="/ingredients/edit" method="POST">
+
+        <input type="hidden" name="ingredientId" value="<%=ingredientInfo[0].ingredientId%>">
+
+
+        <label for="name">Item Name:</label>
+        <input type="text" id="name" name="name" value="<%=ingredientInfo[0].name%>" required><br>
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" value="<%=ingredientInfo[0].quantity%>" required><br>    
+        <label for="unit">Unit:</label>
+        <input type="text" id="unit" name="unit" value="<%=ingredientInfo[0].unit%>"><br>  
+        <button type="submit">Add Ingredient</button>
+    </form>
+    <a href="/">Back to Inventory</a>
+  </div>

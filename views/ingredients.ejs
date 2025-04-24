@@ -19,6 +19,8 @@
               <td><%= ingredient.name %></td>
               <td><%= ingredient.quantity %></td>
               <td><%= ingredient.unit %></td>
+              <td><a href="ingredients/delete?ingredientId=<%=ingredient.ingredientId%>">Delete</a></td>
+              <td><a href="ingredients/edit?ingredientId=<%=ingredient.ingredientId%>">Edit</a></td>
             </tr>
           <% }) %>
         </tbody>

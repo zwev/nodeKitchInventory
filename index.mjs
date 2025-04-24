@@ -33,7 +33,7 @@ const pool = mysql.createPool({
 const conn = await pool.getConnection();
 
 //routes
-app.get('/', async(req, res) => {
+app.get('/', isAuthenticated, async(req, res) => {
     
    res.render('index', 
     {users: [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]})
@@ -101,23 +101,63 @@ app.get('/logout', (req, res) => {
     res.redirect('/login')
 });
 
-app.get('/ingredients', async(req, res) => {
+app.get('/ingredients', isAuthenticated, async(req, res) => {
     
     res.render('ingredients', 
-     {ingredients: [{ name: 'Tomato', quantity: 10, unit: 'pcs' }]})
+     {ingredients: [{ ingredientId: 1, name: 'Tomato', quantity: 10, unit: 'pcs' }]})
  });
 
 app.get('/ingredients/add', async(req, res) => {
-    
     res.render('addIngredient')
  });
+
+app.post('/ingredients/add', (req, res) => {
+  const { name, quantity, unit } = req.body;
+  if (!name || !quantity || !unit) {
+    return res.status(400).send('All fields are required.');
+  }
+  console.log({ name, quantity, unit });
+  // Redirect back to main index or inventory view
+  res.redirect('/ingredients');
+});
+
+app.get("/ingredients/edit", async function(req, res){
+    let ingredientId = req.query.ingredientId;
+    let sql = ``;
+    const [rows] = [];
+    res.render("editIngredient", {ingredientInfo: [{ ingredientId: ingredientId, name: 'Tomato', quantity: 10, unit: 'pcs' }]});
+   });
+
+app.post("/ingredients/edit", async function(req, res){
+  const {ingredientId, name, quantity, unit } = req.body;
+  let sql = ``;
+  console.log({ ingredientId, name, quantity, unit });
+  //const [rows] = await conn.query(sql,params);
+  res.redirect("/ingredients");
+});
+
+app.get("/ingredients/delete", async function(req, res){
+    let ingredientId = req.query.ingredientId;
+    let sql = ``;
+    console.log(ingredientId);
+    //const [rows] = await conn.query(sql, []);
+    res.redirect("/ingredients");
+});
  
 app.get('/user/add', async(req, res) => {
     
     res.render('addUser')
  });
 
-app.get('/recipes', (req, res) => {
+app.post('/user/add', (req, res) => {
+  const name = req.body;
+
+  console.log(name);
+
+  res.redirect('/');
+});
+
+app.get('/recipes', isAuthenticated, (req, res) => {
     res.render('recipes'); // Render the recipes.ejs page
 });
 
@@ -153,7 +193,7 @@ app.get('/recipes/:id', async (req, res) => {
 });
 
 app.get("/dbTest", async(req, res) => {
-    let sql = "select * from q_quotes";
+    let sql = `select * from recipes`;
     const [rows] = await conn.query(sql);
     res.send(rows);
 });
