@@ -35,7 +35,6 @@ const conn = await pool.getConnection();
 
 //routes
 app.get('/', isAuthenticated, async(req, res) => {
-    
    res.render('index', 
     {users: [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]})
 });

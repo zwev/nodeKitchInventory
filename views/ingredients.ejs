@@ -11,6 +11,7 @@
             <th>Name</th>
             <th>Quantity</th>
             <th>Unit</th>
+            <th>Options</th>
           </tr>
         </thead>
         <tbody>
@@ -25,6 +26,7 @@
           <% }) %>
         </tbody>
       </table>
+      <br>
       
     <% } else { %>
       <p>No ingredients available.</p>
@@ -32,4 +34,11 @@
     <a href="/ingredients/add" >Add Ingredient</a>
   </div>
 </div>
+
+<style>
+  #nIngredients {
+      background-color: rgb(110, 145, 173);
+      background-size:contain;
+  }
+</style>
 <%- include("partials/footer.ejs") %>
