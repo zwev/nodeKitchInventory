@@ -1,15 +1,48 @@
 <%- include("partials/header.ejs") %>
 
 <body>
+    <div class="container">
     <h1>Register New Account</h1>
 
     <form action="/register" method="post">
-        Username: <input type="text" name="username"><br>
-        Password: <input type="password" name="password"><br>
-        Confirm Password: <input type="password" name="passwordConfirm"><br>
-        <button> Create Account </button>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"><br>
+      
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br>
+      
+        <label for="passwordConfirm">Confirm Password:</label>
+        <input type="password" id="passwordConfirm" name="passwordConfirm"><br>
+      
+        <label for="accountType">Account Type:</label>
+        <select id="accountType" name="accountType">
+          <option value="individual">Individual</option>
+          <option value="family">Family</option>
+          <option value="professional">Professional</option>
+        </select><br> <br>
 
-    </form>
+    How did you hear about us? <br>
+
+       <label>Google
+        <input type="radio" name="referral" value="google">
+      </label>
+    
+      <label>TV
+        <input type="radio" name="referral" value="tv">
+      </label>
+    
+      <label>School
+        <input type="radio" name="referral" value="school">
+      </label>
+    
+      <label>Other
+        <input type="radio" name="referral" value="other">
+      </label> <br>
+        
+      
+        <button>Create Account</button>
+      </form>
     <a href="/login">Back to Login</a>
+</div>
 </body>
 </html>
