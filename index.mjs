@@ -102,7 +102,8 @@ app.get('/logout', (req, res) => {
 
 app.get('/ingredients', isAuthenticated, async (req, res) => {
     let sql = `SELECT * FROM ingredients
-    WHERE userId = ?`
+    WHERE userId = ?
+    ORDER BY name`;
     const [rows] = await conn.query(sql, [req.session.userID]);
     console.log(rows);
     res.render('ingredients', 
@@ -172,7 +173,7 @@ app.post('/user/add', (req, res) => {
 
 app.get('/recipes', isAuthenticated, async (req, res) => {
     const userID = req.session.userID; 
-    const sql = `SELECT * FROM ingredients WHERE userID = ?`;
+    const sql = `SELECT * FROM ingredients WHERE userID = ? ORDER BY name`;
     const [rows] = await conn.query(sql, [userID]);
     res.render('recipes', {"ingredients":rows}); 
 });
@@ -210,7 +211,7 @@ app.get('/recipes/:id', isAuthenticated, async (req, res) => {
 
 app.get('/favorites', isAuthenticated, async (req, res) => {
     const userID = req.session.userID; // Get the userID from the session
-    const sql = `SELECT * FROM recipes WHERE userID = ?`;
+    const sql = `SELECT * FROM recipes WHERE userID = ? ORDER BY name`;
     try {
         const [rows] = await conn.query(sql, [userID]);
         res.render('favorites', { favorites: rows });
