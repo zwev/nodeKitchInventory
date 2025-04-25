@@ -150,12 +150,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Handle form submission
-  searchForm.addEventListener('submit', async (event) => {
+  async function handleSearch(event) {
     event.preventDefault(); // Prevent the form from reloading the page
 
-    const ingredient = ingredientInput.value.trim();
+    let ingredient = '';
+    if (event.target === searchForm) {
+      // Get the ingredient from the text input
+      ingredient = ingredientInput.value.trim();
+    } else if (event.target === dropdownSearchForm) {
+      // Get the ingredient from the dropdown
+      ingredient = ingredientDropdown.value;
+    }
+
     if (!ingredient) {
-      alert('Please enter an ingredient');
+      alert('Please select or enter an ingredient');
       return;
     }
 
@@ -168,7 +176,11 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (error) {
       recipesContainer.innerHTML = '<p>Error fetching recipes. Please try again later.</p>';
     }
-  });
+  }
+
+  // Attach event listeners to both forms
+  searchForm.addEventListener('submit', handleSearch);
+  dropdownSearchForm.addEventListener('submit', handleSearch);
 
   // Attach event listener to the "Save as Favorite" button
   saveFavoriteButton.addEventListener('click', handleSaveFavorite);
