@@ -272,7 +272,7 @@ app.get("/dbTest", async(req, res) => {
     res.send(rows);
 });
 
-app.get('/indexInspo', async(req, res) => {
+app.get('/indexInspo', async(req, res) => { //random inspiration picture on the home page
     let url = `https://foodish-api.com/api/`;
     let response = await fetch(url);
     let data = await response.json();
@@ -280,7 +280,6 @@ app.get('/indexInspo', async(req, res) => {
     console.log(foodImage);
     res.render("indexInspo", {"foodImage":foodImage});
 });
-
 
 //Middleware functions
 function isAuthenticated(req, res, next){

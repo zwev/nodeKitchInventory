@@ -11,7 +11,8 @@
             <th>Name</th>
             <th>Quantity</th>
             <th>Unit</th>
-            <th>Options</th>
+            <th>Delete</th>
+            <th>Edit</th>
           </tr>
         </thead>
         <tbody>
@@ -20,8 +21,8 @@
               <td><%= ingredient.name %></td>
               <td><%= ingredient.qty %></td>
               <td><%= ingredient.unit %></td>
-              <td><a href="ingredients/delete?ingredientId=<%=ingredient.ingredientId%>">Delete</a></td>
-              <td><a href="ingredients/edit?ingredientId=<%=ingredient.ingredientId%>">Edit</a></td>
+              <td><a href="ingredients/delete?ingredientId=<%=ingredient.ingredientId%>" id = "deleteRef">Delete</a></td>
+              <td><a href="ingredients/edit?ingredientId=<%=ingredient.ingredientId%>" id = "editRef">Edit</a></td>
             </tr>
           <% }) %>
         </tbody>
@@ -31,7 +32,10 @@
     <% } else { %>
       <p>No ingredients available.</p>
     <% } %>
-    <a href="/ingredients/add" >Add Ingredient</a>
+    <a href="/ingredients/add" id = "addRef">Add Ingredient</a><br><br>
+
+    You currently have <%=ingredients.length%> different kinds of ingredients that you can work with!
+
   </div>
 </div>
 
