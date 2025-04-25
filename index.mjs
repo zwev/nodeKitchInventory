@@ -100,8 +100,9 @@ app.get('/logout', (req, res) => {
 });
 
 app.get('/ingredients', isAuthenticated, async (req, res) => {
-    let sql = `SELECT * FROM ingredients`
-    const [rows] = await conn.query(sql);
+    let sql = `SELECT * FROM ingredients
+    WHERE userId = ?`
+    const [rows] = await conn.query(sql, [req.session.userID]);
     console.log(rows);
     res.render('ingredients', 
      {ingredients: rows})
@@ -117,9 +118,9 @@ app.post('/ingredients/add', async (req, res) => {
     return res.status(400).send('All fields are required.');
   }
   let sql = `INSERT into ingredients
-  (name, qty, unit) 
-  VALUES (?,?,?)`;
-  let params = [name, quantity, unit];
+  (name, qty, unit, userID) 
+  VALUES (?,?,?,?)`;
+  let params = [name, quantity, unit, req.session.userID];
   const [rows] = await conn.query(sql, params);
   console.log({ name, quantity, unit });
   // Redirect back to main index or inventory view
