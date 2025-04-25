@@ -272,6 +272,16 @@ app.get("/dbTest", async(req, res) => {
     res.send(rows);
 });
 
+app.get('/indexInspo', async(req, res) => {
+    let url = `https://foodish-api.com/api/`;
+    let response = await fetch(url);
+    let data = await response.json();
+    let foodImage = data.image;
+    console.log(foodImage);
+    res.render("indexInspo", {"foodImage":foodImage});
+});
+
+
 //Middleware functions
 function isAuthenticated(req, res, next){
     if(req.session.authenticated){

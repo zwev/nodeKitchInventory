@@ -11,6 +11,9 @@
     font-style: normal;
   }
 
+#homeMenu {
+  font-size: 20px;
+}
 
 h1, h2 { /* font size for important titles */
   color: rgb(255, 255, 255);
@@ -49,8 +52,13 @@ body{
 }
 .content{
     align-items: center;
-
 }
+
+#inspoImg {
+  height: 500px;
+  width: auto;
+}
+
 .container{
     color: #ffffff;
     font-family: "Hind Madurai", sans-serif;
@@ -75,7 +83,7 @@ form select {
   width: 220px;
 }
 
-.inventoryTable {
+.inventoryTable, #inspoImg {
   background-color: rgb(49, 66, 73);
   border-radius: 15px;
   border-style:ridge;
@@ -90,7 +98,15 @@ table {
 
 th, thead {
   padding: 15px;
-  font-size: 25px;
+  font-size: 35px;
+}
+
+tr {
+  font-size: 30px;
+  font-style: bold;
+  font-family: "Josefin Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
 }
 
 button {
