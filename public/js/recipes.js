@@ -70,6 +70,12 @@ document.addEventListener('DOMContentLoaded', () => {
       <p>${recipe.strInstructions}</p>
     `;
 
+     // Reset the "Save as Favorite" button state
+    saveFavoriteButton.classList.remove('btn-danger');
+    saveFavoriteButton.classList.add('btn-success');
+    saveFavoriteButton.textContent = 'Save as Favorite';
+    saveFavoriteButton.disabled = false;
+
     // Update the "Save as Favorite" button
     saveFavoriteButton.setAttribute('data-id', recipe.idMeal);
     saveFavoriteButton.setAttribute('data-name', recipe.strMeal);
@@ -80,13 +86,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function checkFavoriteStatus(recipeId) {
     try {
-      const data = await fetchData(`/favorites/${recipeId}`);
-      if (data) {
+      const data = await fetch(`/favorites/${recipeId}`);
+      if (data.ok) {
+          console.log('Recipe is favorited:', data);
           saveFavoriteButton.classList.remove('btn-success');
           saveFavoriteButton.classList.add('btn-danger');
           saveFavoriteButton.textContent = 'Favorited';
           saveFavoriteButton.disabled = true;
         } else {
+          console.log('Recipe is not favorited');
           saveFavoriteButton.classList.remove('btn-danger');
           saveFavoriteButton.classList.add('btn-success');
           saveFavoriteButton.textContent = 'Save as Favorite';
@@ -118,10 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       if (response.ok) {
-        button.classList.remove('btn-success');
-        button.classList.add('btn-danger');
-        button.textContent = 'Favorited';
-        button.disabled = true;
+        checkFavoriteStatus(recipeId); // Update the button state
       } else {
         const error = await response.text();
         alert(`Failed to save favorite: ${error}`);

@@ -6,16 +6,6 @@
 
 <div class="container">
     <h1>Kitchen Inventory</h1>
-
-    <div class="userSelector">
-      <label for="userSelect">Select User:</label>
-      <select id="userSelect" name="user">
-        <% users.forEach(function(user) { %>
-          <option value="<%= user.id %>"><%= user.name %></option>
-        <% }) %>
-      </select>
-      <a href="/user/add" class="add-link">Add User</a>
-    </div>
 </div>
 
 <%- include("partials/footer.ejs") %>
