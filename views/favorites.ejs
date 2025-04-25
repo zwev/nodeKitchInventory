@@ -1,0 +1,61 @@
+<%- include('partials/header') %>
+<%- include('partials/nav') %>
+
+<div class="container mt-4">
+  <h1 class="text-center">My Favorites</h1>
+
+  <% if (favorites.length > 0) { %>
+    <ul class="list-group">
+      <% favorites.forEach(favorite => { %>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <img src="<%= favorite.url %>" alt="<%= favorite.name %>" class="img-thumbnail" width="100">
+          </div>
+          <div><h5><%= favorite.name %></h5>
+          </div>
+          <div>
+            <!-- Button to search for the recipe -->
+            <button type="button" class="btn btn-primary recipe-link" data-id="<%= favorite.recipeId %>" data-bs-toggle="modal" data-bs-target="#recipeModal">
+              Recipe Details
+            </button>
+
+            <!-- Button to delete the favorite -->
+            <form action="/favorites/delete" method="POST" class="d-inline">
+              <input type="hidden" name="recipeId" value="<%= favorite.recipeId %>">
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p class="text-center">You have no favorites yet.</p>
+  <% } %>
+</div>
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="recipeModal" tabindex="-1" aria-labelledby="recipeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="recipeModalLabel">Recipe Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modalRecipeDetails">
+        <!-- Recipe details will be inserted here -->
+        <p>Loading...</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <form action="/favorites/delete" method="POST">
+        <input type="hidden" name="recipeId" id="modalRecipeId" value="">
+        <button type="submit" class="btn btn-danger">Delete Favorite</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+
+<script src="/js/favorites.js"></script>

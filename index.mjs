@@ -7,6 +7,7 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
+app.use(express.json());
 
 //initializing sessions
 app.set('trust proxy', 1) // trust first proxy
@@ -169,12 +170,15 @@ app.post('/user/add', (req, res) => {
   res.redirect('/');
 });
 
-app.get('/recipes', isAuthenticated, (req, res) => {
-    res.render('recipes'); // Render the recipes.ejs page
+app.get('/recipes', isAuthenticated, async (req, res) => {
+    const userID = req.session.userID; 
+    const sql = `SELECT * FROM ingredients WHERE userID = ?`;
+    const [rows] = await conn.query(sql, [userID]);
+    res.render('recipes', {"ingredients":rows}); 
 });
 
 
-app.get('/recipes/search', async (req, res) => {
+app.get('/recipes/search', isAuthenticated, async (req, res) => {
     const ingredient = req.query.ingredient;
 
     try {
@@ -189,7 +193,7 @@ app.get('/recipes/search', async (req, res) => {
     }
 });
 
-app.get('/recipes/:id', async (req, res) => {
+app.get('/recipes/:id', isAuthenticated, async (req, res) => {
     const recipeId = req.params.id;
 
     try {
@@ -201,6 +205,64 @@ app.get('/recipes/:id', async (req, res) => {
     } catch (error) {
         console.error('Error fetching recipe details:', error);
         res.status(500).json({ error: 'Error fetching recipe details' });
+    }
+});
+
+app.get('/favorites', isAuthenticated, async (req, res) => {
+    const userID = req.session.userID; // Get the userID from the session
+    const sql = `SELECT * FROM recipes WHERE userID = ?`;
+    try {
+        const [rows] = await conn.query(sql, [userID]);
+        res.render('favorites', { favorites: rows });
+    } catch (error) {
+        console.error('Error fetching favorites:', error);
+        res.status(500).send('Failed to fetch favorites');
+    }
+});
+
+app.post('/favorites/add', isAuthenticated, async (req, res) => {
+    const { id, name, url } = req.body;
+    const userID = req.session.userID; // Get the userID from the session
+
+    const sql = `INSERT INTO recipes (recipeId, name, url, userID) VALUES (?, ?, ?, ?)`;
+    try {
+        await conn.query(sql, [id, name, url, userID]);
+        res.status(201).send('Favorite added successfully');
+    } catch (error) {
+        console.error('Error adding favorite:', error);
+        res.status(500).send('Failed to add favorite');
+    }
+});
+
+app.post('/favorites/delete', isAuthenticated, async (req, res) => {
+    const recipeId = req.body.recipeId; // Use body instead of query for POST
+    const userID = req.session.userID; // Get the userID from the session
+
+    const sql = `DELETE FROM recipes WHERE recipeId = ? AND userID = ?`;
+    try {
+        await conn.query(sql, [recipeId, userID]);
+        res.redirect('/favorites'); // Redirect to favorites page after deletion
+    } catch (error) {
+        console.error('Error deleting favorite:', error);
+        res.status(500).send('Failed to delete favorite');
+    }
+});
+
+app.get('/favorites/:id', isAuthenticated, async (req, res) => {
+    const recipeId = req.params.id;
+    const userID = req.session.userID; // Get the userID from the session
+
+    const sql = `SELECT * FROM recipes WHERE recipeId = ? AND userID = ?`;
+    try {
+        const [rows] = await conn.query(sql, [recipeId, userID]);
+        if (rows.length > 0) {
+            res.json(rows[0]); // Return the favorite recipe details as JSON
+        } else {
+            res.status(404).send('Favorite not found');
+        }
+    } catch (error) {
+        console.error('Error fetching favorite:', error);
+        res.status(500).send('Failed to fetch favorite');
     }
 });
 

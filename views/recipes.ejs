@@ -2,10 +2,6 @@
 
 <%- include("partials/nav.ejs") %>
 
-<!-- right now this is the only search available but goal is to attach this search to recipes
- in the user's inventory so that when they click an ingredient, it is redirected to a search here.
- can also add another search on this page that lets them select ingredients by what they currently have
- in the database -->
 <div class="search-container">
   <form id="searchForm">
     <label for="ingredient">Search Recipes by Ingredient:</label>
@@ -14,7 +10,20 @@
   </form>
 </div>
 
-<div class="recipes-container mt-4" id="recipesContainer">
+  <!-- Dropdown for selecting ingredients -->
+  <form id="dropdownSearchForm" class="mt-3 text-center">
+    <label for="ingredientDropdown">or, select Ingredient from your Ingredients:</label>
+    <select id="ingredientDropdown" class="form-select d-inline-block w-auto mx-auto" name="ingredient">
+      <option value="" disabled selected>Select an ingredient</option>
+      <% ingredients.forEach(ingredient => { %>
+        <option value="<%= ingredient.name %>"><%= ingredient.name %></option>
+        <% }) %>
+    </select>
+    <button type="submit" id="dropdownSearchButton" class="btn btn-primary mt-2">Search</button>
+  </form>
+</div>
+
+<div class="recipes-container mt-4 px-5" id="recipesContainer">
   <!-- Search results inserted here -->
 </div>
 
@@ -32,6 +41,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" id="saveFavoriteButton">Save as Favorite</button>
       </div>
     </div>
   </div>
@@ -39,4 +49,4 @@
 
 <%- include("partials/footer.ejs") %>
 
-<script src="/js/scripts.js"></script>
+<script src="/js/recipes.js"></script>
