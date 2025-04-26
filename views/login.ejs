@@ -1,19 +1,21 @@
 <%- include("partials/header.ejs") %>
 <body>
-    <div class="container">
-    <h1>Login</h1>
+  <div class="container">
+    <h1>Login</h1><br>
+
+    Welcome. Enter your username and password.<br><br>
 
     <form action="/login" method="post">
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username"><br>
+        <input type="text" id="username" name="username"><br><br>
       
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password"><br>
+        <input type="password" id="password" name="password"><br><br>
       
         <button>Login</button>
       </form>
-    <a href="/register">Register New Account</a>
-</div>
+    <a href="/register" id = "registerRef">Register New Account</a>
+  </div>
     
 </body>
 </html>

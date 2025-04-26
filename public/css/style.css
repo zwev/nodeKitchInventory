@@ -65,11 +65,18 @@ body{
   width: auto;
 }
 
+#username, #password {
+  width: 300px;
+  margin-left: 100px;
+  border-radius: 15px;
+}
+
 .container{
     color: #ffffff;
-    font-family: "Hind Madurai", sans-serif;
+    font-family: "Josefin Sans", sans-serif;
     font-weight: 300;
     font-style: normal;
+    font-size: 25px;
 }
 
 form {
@@ -135,7 +142,8 @@ tr {
   background-color: rgb(84, 160, 84);
 }
 
-#addRef {
+#addRef, #registerRef {
+  color: white;
   background-color: rgb(82, 107, 128);
   font-size: 30px;
   font-style: bold;
